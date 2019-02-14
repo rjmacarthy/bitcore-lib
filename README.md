@@ -1,9 +1,9 @@
 stratcore-lib
 =======
 
-A fork of bitcore-lib for stratis.
+A fork of bitcore-lib for Stratis.
 
-Please note that this is an unofficaial port and it has not been tested.
+Please note that this is an unofficial port and it has not been tested.
 
 Install via npm
 
