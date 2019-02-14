@@ -4668,6 +4668,26 @@ function removeNetwork(network) {
   }
 }
 
+// addNetwork({
+//   name: 'livenet',
+//   alias: 'mainnet',
+//   pubkeyhash: 0x00,
+//   privatekey: 0x80,
+//   scripthash: 0x05,
+//   xpubkey: 0x0488b21e,
+//   xprivkey: 0x0488ade4,
+//   networkMagic: 0xf9beb4d9,
+//   port: 8333,
+//   dnsSeeds: [
+//     'seed.bitcoin.sipa.be',
+//     'dnsseed.bluematt.me',
+//     'dnsseed.bitcoin.dashjr.org',
+//     'seed.bitcoinstats.com',
+//     'seed.bitnodes.io',
+//     'bitseed.xf2.org'
+//   ]
+// });
+
 addNetwork({
   name: 'livenet',
   alias: 'mainnet',
@@ -48482,8 +48502,7 @@ var AttributeTypeValue = asn.define('AttributeTypeValue', function () {
 var AlgorithmIdentifier = asn.define('AlgorithmIdentifier', function () {
   this.seq().obj(
     this.key('algorithm').objid(),
-    this.key('parameters').optional(),
-    this.key('curve').objid().optional()
+    this.key('parameters').optional()
   )
 })
 
@@ -48525,7 +48544,7 @@ var Extension = asn.define('Extension', function () {
 
 var TBSCertificate = asn.define('TBSCertificate', function () {
   this.seq().obj(
-    this.key('version').explicit(0).int().optional(),
+    this.key('version').explicit(0).int(),
     this.key('serialNumber').int(),
     this.key('signature').use(AlgorithmIdentifier),
     this.key('issuer').use(Name),
@@ -48549,13 +48568,13 @@ var X509Certificate = asn.define('X509Certificate', function () {
 module.exports = X509Certificate
 
 },{"asn1.js":46}],163:[function(require,module,exports){
+(function (Buffer){
 // adapted from https://github.com/apatil/pemstrip
 var findProc = /Proc-Type: 4,ENCRYPTED[\n\r]+DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)[\n\r]+([0-9A-z\n\r\+\/\=]+)[\n\r]+/m
-var startRegex = /^-----BEGIN ((?:.*? KEY)|CERTIFICATE)-----/m
-var fullRegex = /^-----BEGIN ((?:.*? KEY)|CERTIFICATE)-----([0-9A-z\n\r\+\/\=]+)-----END \1-----$/m
+var startRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----/m
+var fullRegex = /^-----BEGIN ((?:.* KEY)|CERTIFICATE)-----([0-9A-z\n\r\+\/\=]+)-----END \1-----$/m
 var evp = require('evp_bytestokey')
 var ciphers = require('browserify-aes')
-var Buffer = require('safe-buffer').Buffer
 module.exports = function (okey, password) {
   var key = okey.toString()
   var match = key.match(findProc)
@@ -48565,8 +48584,8 @@ module.exports = function (okey, password) {
     decrypted = new Buffer(match2[2].replace(/[\r\n]/g, ''), 'base64')
   } else {
     var suite = 'aes' + match[1]
-    var iv = Buffer.from(match[2], 'hex')
-    var cipherText = Buffer.from(match[3].replace(/[\r\n]/g, ''), 'base64')
+    var iv = new Buffer(match[2], 'hex')
+    var cipherText = new Buffer(match[3].replace(/[\r\n]/g, ''), 'base64')
     var cipherKey = evp(password, iv.slice(0, 8), parseInt(match[1], 10)).key
     var out = []
     var cipher = ciphers.createDecipheriv(suite, cipherKey, iv)
@@ -48581,13 +48600,14 @@ module.exports = function (okey, password) {
   }
 }
 
-},{"browserify-aes":70,"evp_bytestokey":135,"safe-buffer":198}],164:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"browserify-aes":70,"buffer":99,"evp_bytestokey":135}],164:[function(require,module,exports){
+(function (Buffer){
 var asn1 = require('./asn1')
 var aesid = require('./aesid.json')
 var fixProc = require('./fixProc')
 var ciphers = require('browserify-aes')
 var compat = require('pbkdf2')
-var Buffer = require('safe-buffer').Buffer
 module.exports = parseKeys
 
 function parseKeys (buffer) {
@@ -48597,7 +48617,7 @@ function parseKeys (buffer) {
     buffer = buffer.key
   }
   if (typeof buffer === 'string') {
-    buffer = Buffer.from(buffer)
+    buffer = new Buffer(buffer)
   }
 
   var stripped = fixProc(buffer, password)
@@ -48682,7 +48702,7 @@ function decrypt (data, password) {
   var iv = data.algorithm.decrypt.cipher.iv
   var cipherText = data.subjectPrivateKey
   var keylen = parseInt(algo.split('-')[1], 10) / 8
-  var key = compat.pbkdf2Sync(password, salt, iters, keylen, 'sha1')
+  var key = compat.pbkdf2Sync(password, salt, iters, keylen)
   var cipher = ciphers.createDecipheriv(algo, key, iv)
   var out = []
   out.push(cipher.update(cipherText))
@@ -48690,7 +48710,8 @@ function decrypt (data, password) {
   return Buffer.concat(out)
 }
 
-},{"./aesid.json":160,"./asn1":161,"./fixProc":163,"browserify-aes":70,"pbkdf2":165,"safe-buffer":198}],165:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"./aesid.json":160,"./asn1":161,"./fixProc":163,"browserify-aes":70,"buffer":99,"pbkdf2":165}],165:[function(require,module,exports){
 exports.pbkdf2 = require('./lib/async')
 exports.pbkdf2Sync = require('./lib/sync')
 
@@ -54608,7 +54629,7 @@ module.exports={
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/rjmacarthy/stratcore-lib"
+    "url": "https://github.com/bitpay/stratcore-lib.git"
   },
   "browser": {
     "request": "browser-request"
@@ -54622,7 +54643,7 @@ module.exports={
     "lodash": "=4.17.11"
   },
   "devDependencies": {
-    "bitcore-build": "https://github.com/bitpay/bitcore-build.git#1023e8a99cd42b9241ccafe8e34c52f308c10284",
+    "stratcore-build": "https://github.com/bitpay/stratcore-build.git#1023e8a99cd42b9241ccafe8e34c52f308c10284",
     "brfs": "^2.0.1",
     "chai": "^4.2.0",
     "gulp": "^4.0.0",
@@ -54692,6 +54713,7 @@ stratcore.Transaction = require('./lib/transaction');
 stratcore.URI = require('./lib/uri');
 stratcore.Unit = require('./lib/unit');
 
+// dependencies, subject to change
 stratcore.deps = {};
 stratcore.deps.bnjs = require('bn.js');
 stratcore.deps.bs58 = require('bs58');
@@ -54699,6 +54721,12 @@ stratcore.deps.Buffer = Buffer;
 stratcore.deps.elliptic = require('elliptic');
 stratcore.deps._ = require('lodash');
 
+// Internal usage, exposed for testing/advanced tweaking
 stratcore.Transaction.sighash = require('./lib/transaction/sighash');
+
+var privateKey = new stratcore.PrivateKey();
+var address = privateKey.toAddress();
+
+console.log(address);
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
 },{"./lib/address":1,"./lib/block":4,"./lib/block/blockheader":3,"./lib/block/merkleblock":5,"./lib/crypto/bn":6,"./lib/crypto/ecdsa":7,"./lib/crypto/hash":8,"./lib/crypto/point":9,"./lib/crypto/random":10,"./lib/crypto/signature":11,"./lib/encoding/base58":12,"./lib/encoding/base58check":13,"./lib/encoding/bufferreader":14,"./lib/encoding/bufferwriter":15,"./lib/encoding/varint":16,"./lib/errors":17,"./lib/hdprivatekey.js":19,"./lib/hdpublickey.js":20,"./lib/networks":21,"./lib/opcode":22,"./lib/privatekey":23,"./lib/publickey":24,"./lib/script":25,"./lib/transaction":28,"./lib/transaction/sighash":36,"./lib/unit":41,"./lib/uri":42,"./lib/util/buffer":43,"./lib/util/js":44,"./lib/util/preconditions":45,"./package.json":214,"bn.js":65,"bs58":96,"buffer":99,"elliptic":118,"lodash":155}]},{},[]);

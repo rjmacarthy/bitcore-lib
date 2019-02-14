@@ -5,22 +5,22 @@ var should = require('chai').should();
 var expect = require('chai').expect;
 var _ = require('lodash');
 
-var bitcore = require('../../..');
-var Transaction = bitcore.Transaction;
-var PrivateKey = bitcore.PrivateKey;
-var Address = bitcore.Address;
-var Script = bitcore.Script;
-var Networks = bitcore.Networks;
-var Signature = bitcore.crypto.Signature;
+var stratcore = require('../../..');
+var Transaction = stratcore.Transaction;
+var PrivateKey = stratcore.PrivateKey;
+var Address = stratcore.Address;
+var Script = stratcore.Script;
+var Networks = stratcore.Networks;
+var Signature = stratcore.crypto.Signature;
 
 describe('PublicKeyHashInput', function() {
 
-  var privateKey = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4');
+  var privateKey = new PrivateKey('VLTvcdSCHxF6dZ2adZZfd1WsxZEuJ2hYVRtjD8w318CTGtkWXrLd');
   var publicKey = privateKey.publicKey;
   var address = new Address(publicKey, Networks.livenet);
 
   var output = {
-    address: '33zbk2aSZYdNbRsMPPt6jgy6Kq1kQreqeb',
+    address: 'SU6DTLsFDykv1wWeDmzYmwSJjYRR9Gxr13',
     txId: '66e64ef8a3b384164b78453fa8c8194de9a473ba14f89485a0e433699daec140',
     outputIndex: 0,
     script: new Script(address),

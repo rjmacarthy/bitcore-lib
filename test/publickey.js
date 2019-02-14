@@ -3,13 +3,13 @@
 var should = require('chai').should();
 var expect = require('chai').expect;
 
-var bitcore = require('..');
-var Point = bitcore.crypto.Point;
-var BN = bitcore.crypto.BN;
-var PublicKey = bitcore.PublicKey;
-var PrivateKey = bitcore.PrivateKey;
-var Address = bitcore.Address;
-var Networks = bitcore.Networks;
+var stratcore = require('..');
+var Point = stratcore.crypto.Point;
+var BN = stratcore.crypto.BN;
+var PublicKey = stratcore.PublicKey;
+var PrivateKey = stratcore.PrivateKey;
+var Address = stratcore.Address;
+var Networks = stratcore.Networks;
 
 /* jshint maxlen: 200 */
 
@@ -337,15 +337,9 @@ describe('PublicKey', function() {
     it('should output this known mainnet address correctly', function() {
       var pk = new PublicKey('03c87bd0e162f26969da8509cafcb7b8c8d202af30b928c582e263dd13ee9a9781');
       var address = pk.toAddress('livenet');
-      address.toString().should.equal('1A6ut1tWnUq1SEQLMr4ttDh24wcbJ5o9TT');
+      address.toString().should.equal('SWPuurffWr2CxYBnuH3yS7qaiir29ceU2g');
     });
-
-    it('should output this known testnet address correctly', function() {
-      var pk = new PublicKey('0293126ccc927c111b88a0fe09baa0eca719e2a3e087e8a5d1059163f5c566feef');
-      var address = pk.toAddress('testnet');
-      address.toString().should.equal('mtX8nPZZdJ8d3QNLRJ1oJTiEi26Sj6LQXS');
-    });
-
+    
   });
 
   describe('hashes', function() {
@@ -353,10 +347,10 @@ describe('PublicKey', function() {
     // wif private key, address
     // see: https://github.com/bitcoin/bitcoin/blob/master/src/test/key_tests.cpp#L20
     var data = [
-      ['5HxWvvfubhXpYYpS3tJkw6fq9jE9j18THftkZjHHfmFiWtmAbrj', '1QFqqMUD55ZV3PJEJZtaKCsQmjLT6JkjvJ'],
-      ['5KC4ejrDjv152FGwP386VD1i2NYc5KkfSMyv1nGy1VGDxGHqVY3', '1F5y5E5FMc5YzdJtB9hLaUe43GDxEKXENJ'],
-      ['Kwr371tjA9u2rFSMZjTNun2PXXP3WPZu2afRHTcta6KxEUdm1vEw', '1NoJrossxPBKfCHuJXT4HadJrXRE9Fxiqs'],
-      ['L3Hq7a8FEQwJkW1M2GNKDW28546Vp5miewcCzSqUD9kCAXrJdS3g', '1CRj2HyM1CXWzHAXLQtiGLyggNT9WQqsDs']
+      ['VGEVCYg9AjMV2ApvroeotdmB9C5YLZfJj9kSdhkZiVoqMp482b2D', 'SjPhQL3NNyQWLpSp3t8t6JuKqocPuq4tGf'],
+      ['VJz9LwAbESVjWMG5oUwncxouogjLVkUPXdgizKwDDbv3og6kZALR', 'SaFRDTNahSeFReFpAPVu2f9DvsEiNQxuRE'],
+      ['VPiWLW42jVuToUHQwk4VPbnffLGCDM1zrdc7Yb3YDzcFYsC7jAHj', 'Sc5mq18he72fR3EzD7cW1PV8yPChw7M7YT'],
+      ['VNt1ZmmVWX2AWd6xwEK86xQGKeHLjgpmxZoTfDaK44ZikwktiX7m', 'STwuFD9NxCyPv2Jzn4BRg9K5zMcrfEmbyF']
     ];
     
     data.forEach(function(d){

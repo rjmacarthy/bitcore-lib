@@ -1,11 +1,11 @@
 'use strict';
 
 var should = require('chai').should();
-var bitcore = require('../..');
-var BN = bitcore.crypto.BN;
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var Varint = bitcore.encoding.Varint;
+var stratcore = require('../..');
+var BN = stratcore.crypto.BN;
+var BufferReader = stratcore.encoding.BufferReader;
+var BufferWriter = stratcore.encoding.BufferWriter;
+var Varint = stratcore.encoding.Varint;
 
 describe('Varint', function() {
 

@@ -4,17 +4,17 @@ var should = require('chai').should();
 var expect = require('chai').expect;
 var _ = require('lodash');
 
-var bitcore = require('../../..');
-var errors = bitcore.errors;
-var PrivateKey = bitcore.PrivateKey;
-var Address = bitcore.Address;
-var Script = bitcore.Script;
-var Networks = bitcore.Networks;
-var Input = bitcore.Transaction.Input;
+var stratcore = require('../../..');
+var errors = stratcore.errors;
+var PrivateKey = stratcore.PrivateKey;
+var Address = stratcore.Address;
+var Script = stratcore.Script;
+var Networks = stratcore.Networks;
+var Input = stratcore.Transaction.Input;
 
 describe('Transaction.Input', function() {
 
-  var privateKey = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4');
+  var privateKey = new PrivateKey('VNt1ZmmVWX2AWd6xwEK86xQGKeHLjgpmxZoTfDaK44ZikwktiX7m');
   var publicKey = privateKey.publicKey;
   var address = new Address(publicKey, Networks.livenet);
   var output = {

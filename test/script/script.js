@@ -2,14 +2,14 @@
 
 var should = require('chai').should();
 var expect = require('chai').expect;
-var bitcore = require('../..');
+var stratcore = require('../..');
 
-var BufferUtil = bitcore.util.buffer;
-var Script = bitcore.Script;
-var Networks = bitcore.Networks;
-var Opcode = bitcore.Opcode;
-var PublicKey = bitcore.PublicKey;
-var Address = bitcore.Address;
+var BufferUtil = stratcore.util.buffer;
+var Script = stratcore.Script;
+var Networks = stratcore.Networks;
+var Opcode = stratcore.Opcode;
+var PublicKey = stratcore.PublicKey;
+var Address = stratcore.Address;
 
 describe('Script', function() {
 
@@ -294,7 +294,7 @@ describe('Script', function() {
       // from txid: 5c85ed63469aa9971b5d01063dbb8bcdafd412b2f51a3d24abf2e310c028bbf8
       // and input index: 5
       var scriptBuffer = new Buffer('483045022050eb59c79435c051f45003d9f82865c8e4df5699d7722e77113ef8cadbd92109022100d4ab233e070070eb8e0e62e3d2d2eb9474a5bf135c9eda32755acb0875a6c20601', 'hex');
-      var script = bitcore.Script.fromBuffer(scriptBuffer);
+      var script = stratcore.Script.fromBuffer(scriptBuffer);
       script.isPublicKeyIn().should.equal(true);
     });
   });
@@ -710,52 +710,11 @@ describe('Script', function() {
     });
   });
 
-  describe('#buildMultisigOut', function() {
-    var pubKeyHexes = [
-      '022df8750480ad5b26950b25c7ba79d3e37d75f640f8e5d9bcd5b150a0f85014da',
-      '03e3818b65bcc73a7d64064106a859cc1a5a728c4345ff0b641209fba0d90de6e9',
-      '021f2f6e1e50cb6a953935c3601284925decd3fd21bc445712576873fb8c6ebc18',
-      '02bf97f572a02a8900246d72c2e8fa3d3798a6e59c4e17de2d131d9c60d0d9b574',
-      '036a98a36aa7665874b1ba9130bc6d318e52fd3bdb5969532d7fc09bf2476ff842',
-      '033aafcbead78c08b0e0aacc1b0cdb40702a7c709b660bebd286e973242127e15b',
-    ];
-    var sortkeys = pubKeyHexes.slice(0, 3).map(PublicKey);
-    it('should create sorted script by default', function() {
-      var s = Script.buildMultisigOut(sortkeys, 2);
-      s.toString().should.equal('OP_2 33 0x021f2f6e1e50cb6a953935c3601284925decd3fd21bc445712576873fb8c6ebc18 33 0x022df8750480ad5b26950b25c7ba79d3e37d75f640f8e5d9bcd5b150a0f85014da 33 0x03e3818b65bcc73a7d64064106a859cc1a5a728c4345ff0b641209fba0d90de6e9 OP_3 OP_CHECKMULTISIG');
-      s.isMultisigOut().should.equal(true);
-    });
-    it('should fail when number of required signatures is greater than number of pubkeys', function() {
-      expect(sortkeys.length).to.equal(3);
-      expect(function() {
-        return Script.buildMultisigOut(sortkeys, 4);
-      }).to.throw('Number of required signatures must be less than or equal to the number of public keys');
-    });
-    it('should create unsorted script if specified', function() {
-      var s = Script.buildMultisigOut(sortkeys, 2);
-      var u = Script.buildMultisigOut(sortkeys, 2, {
-        noSorting: true
-      });
-      s.toString().should.not.equal(u.toString());
-      u.toString().should.equal('OP_2 33 0x022df8750480ad5b26950b25c7ba79d3e37d75f640f8e5d9bcd5b150a0f85014da 33 0x03e3818b65bcc73a7d64064106a859cc1a5a728c4345ff0b641209fba0d90de6e9 33 0x021f2f6e1e50cb6a953935c3601284925decd3fd21bc445712576873fb8c6ebc18 OP_3 OP_CHECKMULTISIG');
-      s.isMultisigOut().should.equal(true);
-    });
-    var test_mn = function(m, n) {
-      var pubkeys = pubKeyHexes.slice(0, n).map(PublicKey);
-      var s = Script.buildMultisigOut(pubkeys, m);
-      s.isMultisigOut().should.equal(true);
-    };
-    for (var n = 1; n < 6; n++) {
-      for (var m = 1; m <= n; m++) {
-        it('should create ' + m + '-of-' + n, test_mn.bind(null, m, n));
-      }
-    }
-  });
 
   describe('#buildWitnessMultisigOutFromScript', function() {
     it('it will build nested witness scriptSig', function() {
-      var redeemScript = bitcore.Script();
-      var redeemHash = bitcore.crypto.Hash.sha256(redeemScript.toBuffer());
+      var redeemScript = stratcore.Script();
+      var redeemHash = stratcore.crypto.Hash.sha256(redeemScript.toBuffer());
       var s = Script.buildWitnessMultisigOutFromScript(redeemScript);
       var buf = s.toBuffer();
       buf[0].should.equal(0);
@@ -765,30 +724,15 @@ describe('Script', function() {
 
   describe('#buildPublicKeyHashOut', function() {
     it('should create script from livenet address', function() {
-      var address = Address.fromString('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14');
+      var address = Address.fromString('SPHm2PYg4zj6MKzki7EBVBja5Dg6DA9oua');
       var s = Script.buildPublicKeyHashOut(address);
       should.exist(s);
-      s.toString().should.equal('OP_DUP OP_HASH160 20 0xecae7d092947b7ee4998e254aa48900d26d2ce1d OP_EQUALVERIFY OP_CHECKSIG');
+      s.toString().should.equal('OP_DUP OP_HASH160 20 0x15e48ef65c78e2a42b304b4c15eb5c4952b59cbc OP_EQUALVERIFY OP_CHECKSIG');
       s.isPublicKeyHashOut().should.equal(true);
-      s.toAddress().toString().should.equal('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14');
+      s.toAddress().toString().should.equal('SPHm2PYg4zj6MKzki7EBVBja5Dg6DA9oua');
     });
-    it('should create script from testnet address', function() {
-      var address = Address.fromString('mxRN6AQJaDi5R6KmvMaEmZGe3n5ScV9u33');
-      var s = Script.buildPublicKeyHashOut(address);
-      should.exist(s);
-      s.toString().should.equal('OP_DUP OP_HASH160 20 0xb96b816f378babb1fe585b7be7a2cd16eb99b3e4 OP_EQUALVERIFY OP_CHECKSIG');
-      s.isPublicKeyHashOut().should.equal(true);
-      s.toAddress().toString().should.equal('mxRN6AQJaDi5R6KmvMaEmZGe3n5ScV9u33');
-    });
-    it('should create script from public key', function() {
-      var pubkey = new PublicKey('022df8750480ad5b26950b25c7ba79d3e37d75f640f8e5d9bcd5b150a0f85014da');
-      var s = Script.buildPublicKeyHashOut(pubkey);
-      should.exist(s);
-      s.toString().should.equal('OP_DUP OP_HASH160 20 0x9674af7395592ec5d91573aa8d6557de55f60147 OP_EQUALVERIFY OP_CHECKSIG');
-      s.isPublicKeyHashOut().should.equal(true);
-      should.exist(s._network);
-      s._network.should.equal(pubkey.network);
-    });
+   
+    
   });
   describe('#buildPublicKeyOut', function() {
     it('should create script from public key', function() {
@@ -845,18 +789,12 @@ describe('Script', function() {
     });
 
     it('inherits network property from other script', function() {
-      var s1 = new Script.fromAddress(new Address('1FSMWkjVPAxzUNjbxT52p3mVKC971rfW3S'));
+      var s1 = new Script.fromAddress(new Address('SPHm2PYg4zj6MKzki7EBVBja5Dg6DA9oua'));
       var s2 = Script.buildScriptHashOut(s1);
       should.exist(s1._network);
       s1._network.should.equal(s2._network);
     });
 
-    it('inherits network property form an address', function() {
-      var address = new Address('34Nn91aTGaULqWsZiunrBPHzFBDrZ3B8XS');
-      var script = Script.buildScriptHashOut(address);
-      should.exist(script._network);
-      script._network.should.equal(address.network);
-    });
   });
   describe('#toScriptHashOut', function() {
     it('should create script from another script', function() {
@@ -927,12 +865,12 @@ describe('Script', function() {
       data.should.deep.equal(new Buffer(0));
     });
     it('for a P2PKH address', function() {
-      var address = Address.fromString('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14');
+      var address = Address.fromString('STnAtMsR9bHucfHL9cTeMS6Gk9wD2DtX56');
       var script = Script.buildPublicKeyHashOut(address);
       expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.be.equal(true);
     });
     it('for a P2SH address', function() {
-      var address = Address.fromString('3GhtMmAbWrUf6Y8vDxn9ETB14R6V7Br3mt');
+      var address = Address.fromString('STnAtMsR9bHucfHL9cTeMS6Gk9wD2DtX56');
       var script = new Script(address);
       expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.be.equal(true);
     });
@@ -968,13 +906,7 @@ describe('Script', function() {
       script.toAddress().network.should.equal(Networks.defaultNetwork);
     });
     it('for a P2PKH address', function() {
-      var stringAddress = '1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14';
-      var address = new Address(stringAddress);
-      var script = new Script(address);
-      script.toAddress().toString().should.equal(stringAddress);
-    });
-    it('for a P2SH address', function() {
-      var stringAddress = '3GhtMmAbWrUf6Y8vDxn9ETB14R6V7Br3mt';
+      var stringAddress = 'STnAtMsR9bHucfHL9cTeMS6Gk9wD2DtX56';
       var address = new Address(stringAddress);
       var script = new Script(address);
       script.toAddress().toString().should.equal(stringAddress);
@@ -987,26 +919,26 @@ describe('Script', function() {
       // taken from tx 7e519caca256423320b92e3e17be5701f87afecbdb3f53af598032bfd8d164f5
       var script = new Script('OP_DUP OP_HASH160 20 ' +
         '0xc8e11b0eb0d2ad5362d894f048908341fa61b6e1 OP_EQUALVERIFY OP_CHECKSIG');
-      script.toAddress().toString().should.equal('1KK9oz4bFH8c1t6LmighHaoSEGx3P3FEmc');
+      script.toAddress().toString().should.equal('Sfc9qpqjyeKoYBsoK9fmqUwzt4BU5zbvde');
     });
     it('works for p2pkh input', function() {
       // taken from tx 7e519caca256423320b92e3e17be5701f87afecbdb3f53af598032bfd8d164f5
       var script = new Script('72 0x3045022100eff96230ca0f55b1e8c7a63e014f48611ff1af40875ecd33dee9062d7a6f5e2002206320405b5f6992c756e03e66b21a05a812b60996464ac6af815c2638b930dd7a01 65 0x04150defa035a2c7d826d7d5fc8ab2154bd1bb832f1a5c8ecb338f436362ad232e428b57db44677c5a8bd42c5ed9e2d7e04e742c59bee1b40080cfd57dec64b23a');
-      script.toAddress().toString().should.equal('1KK9oz4bFH8c1t6LmighHaoSEGx3P3FEmc');
+      script.toAddress().toString().should.equal('Sfc9qpqjyeKoYBsoK9fmqUwzt4BU5zbvde');
       // taken from tx 7f8f95752a59d715dae9e0008a42e7968d2736741591bbfc6685f6e1649c21ed
       var s2 = new Script('71 0x3044022017053dad84aa06213749df50a03330cfd24d6b8e7ddbb6de66c03697b78a752a022053bc0faca8b4049fb3944a05fcf7c93b2861734d39a89b73108f605f70f5ed3401 33 0x0225386e988b84248dc9c30f784b06e02fdec57bbdbd443768eb5744a75ce44a4c');
-      s2.toAddress().toString().should.equal('17VArX6GRE6i6MVscBUZoXwi6NhnHa68B7');
+      s2.toAddress().toString().should.equal('STnAtMsR9bHucfHL9cTeMS6Gk9wD2DtX56');
     });
 
     it('works for p2sh output', function() {
       // taken from tx fe1f764299dc7f3b5a8fae912050df2b633bf99554c68bf1c456edb9c2b63585
       var script = new Script('OP_HASH160 20 0x99d29051af0c29adcb9040034752bba7dde33e35 OP_EQUAL');
-      script.toAddress().toString().should.equal('3FiMZ7stbfH2WG5JQ7CiuzrFo7CEnGUcAP');
+      script.toAddress().toString().should.equal('sYGji9eToJtAeGohLTAy73WfKe7S638w2r');
     });
     it('works for p2sh input', function() {
       // taken from tx fe1f764299dc7f3b5a8fae912050df2b633bf99554c68bf1c456edb9c2b63585
       var script = new Script('OP_FALSE 72 0x3045022100e824fbe979fac5834d0062dd5a4e82a898e00ac454bd254cd708ad28530816f202206251ff0fa4dd70c0524c690d4e4deb2bd167297e7bbdf6743b4a8050d681555001 37 0x512102ff3ae0aaa4679ea156d5581dbe6695cc0c311df0aa42af76670d0debbd8f672951ae');
-      script.toAddress().toString().should.equal('3GYicPxCvsKvbJmZNBBeWkC3cLuGFhtrQi');
+      script.toAddress().toString().should.equal('sZ76mRin8Ww4jKVxJX9thnrT8spTaNhyLF');
     });
 
     // no address scripts
@@ -1061,7 +993,7 @@ describe('Script', function() {
     });
     it('should handle P2SH-multisig-in scripts from utility', function() {
       // create a well-formed signature, does not need to match pubkeys
-      var signature = bitcore.crypto.Signature.fromString('30060201FF0201FF');
+      var signature = stratcore.crypto.Signature.fromString('30060201FF0201FF');
       var signatures = [ signature.toBuffer() ];
       var p2sh = Script.buildP2SHMultisigIn(pubKeyHexes, 1, signatures, {});
       p2sh.getSignatureOperationsCount(true).should.equal(0);

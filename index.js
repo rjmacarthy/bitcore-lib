@@ -1,69 +1,67 @@
 'use strict';
 
-var bitcore = module.exports;
+var stratcore = module.exports;
 
 // module information
-bitcore.version = 'v' + require('./package.json').version;
-bitcore.versionGuard = function(version) {
+stratcore.version = 'v' + require('./package.json').version;
+stratcore.versionGuard = function(version) {
   if (version !== undefined) {
-    var message = 'More than one instance of bitcore-lib found. ' +
-      'Please make sure to require bitcore-lib and check that submodules do' +
-      ' not also include their own bitcore-lib dependency.';
+    var message = 'More than one instance of stratcore-lib found. ' +
+      'Please make sure to require stratcore-lib and check that submodules do' +
+      ' not also include their own stratcore-lib dependency.';
     throw new Error(message);
   }
 };
-bitcore.versionGuard(global._bitcore);
-global._bitcore = bitcore.version;
+stratcore.versionGuard(global._stratcore);
+global._stratcore = stratcore.version;
 
 // crypto
-bitcore.crypto = {};
-bitcore.crypto.BN = require('./lib/crypto/bn');
-bitcore.crypto.ECDSA = require('./lib/crypto/ecdsa');
-bitcore.crypto.Hash = require('./lib/crypto/hash');
-bitcore.crypto.Random = require('./lib/crypto/random');
-bitcore.crypto.Point = require('./lib/crypto/point');
-bitcore.crypto.Signature = require('./lib/crypto/signature');
+stratcore.crypto = {};
+stratcore.crypto.BN = require('./lib/crypto/bn');
+stratcore.crypto.ECDSA = require('./lib/crypto/ecdsa');
+stratcore.crypto.Hash = require('./lib/crypto/hash');
+stratcore.crypto.Random = require('./lib/crypto/random');
+stratcore.crypto.Point = require('./lib/crypto/point');
+stratcore.crypto.Signature = require('./lib/crypto/signature');
 
 // encoding
-bitcore.encoding = {};
-bitcore.encoding.Base58 = require('./lib/encoding/base58');
-bitcore.encoding.Base58Check = require('./lib/encoding/base58check');
-bitcore.encoding.BufferReader = require('./lib/encoding/bufferreader');
-bitcore.encoding.BufferWriter = require('./lib/encoding/bufferwriter');
-bitcore.encoding.Varint = require('./lib/encoding/varint');
+stratcore.encoding = {};
+stratcore.encoding.Base58 = require('./lib/encoding/base58');
+stratcore.encoding.Base58Check = require('./lib/encoding/base58check');
+stratcore.encoding.BufferReader = require('./lib/encoding/bufferreader');
+stratcore.encoding.BufferWriter = require('./lib/encoding/bufferwriter');
+stratcore.encoding.Varint = require('./lib/encoding/varint');
 
 // utilities
-bitcore.util = {};
-bitcore.util.buffer = require('./lib/util/buffer');
-bitcore.util.js = require('./lib/util/js');
-bitcore.util.preconditions = require('./lib/util/preconditions');
+stratcore.util = {};
+stratcore.util.buffer = require('./lib/util/buffer');
+stratcore.util.js = require('./lib/util/js');
+stratcore.util.preconditions = require('./lib/util/preconditions');
 
 // errors thrown by the library
-bitcore.errors = require('./lib/errors');
+stratcore.errors = require('./lib/errors');
 
 // main bitcoin library
-bitcore.Address = require('./lib/address');
-bitcore.Block = require('./lib/block');
-bitcore.MerkleBlock = require('./lib/block/merkleblock');
-bitcore.BlockHeader = require('./lib/block/blockheader');
-bitcore.HDPrivateKey = require('./lib/hdprivatekey.js');
-bitcore.HDPublicKey = require('./lib/hdpublickey.js');
-bitcore.Networks = require('./lib/networks');
-bitcore.Opcode = require('./lib/opcode');
-bitcore.PrivateKey = require('./lib/privatekey');
-bitcore.PublicKey = require('./lib/publickey');
-bitcore.Script = require('./lib/script');
-bitcore.Transaction = require('./lib/transaction');
-bitcore.URI = require('./lib/uri');
-bitcore.Unit = require('./lib/unit');
+stratcore.Address = require('./lib/address');
+stratcore.Block = require('./lib/block');
+stratcore.MerkleBlock = require('./lib/block/merkleblock');
+stratcore.BlockHeader = require('./lib/block/blockheader');
+stratcore.HDPrivateKey = require('./lib/hdprivatekey.js');
+stratcore.HDPublicKey = require('./lib/hdpublickey.js');
+stratcore.Networks = require('./lib/networks');
+stratcore.Opcode = require('./lib/opcode');
+stratcore.PrivateKey = require('./lib/privatekey');
+stratcore.PublicKey = require('./lib/publickey');
+stratcore.Script = require('./lib/script');
+stratcore.Transaction = require('./lib/transaction');
+stratcore.URI = require('./lib/uri');
+stratcore.Unit = require('./lib/unit');
 
-// dependencies, subject to change
-bitcore.deps = {};
-bitcore.deps.bnjs = require('bn.js');
-bitcore.deps.bs58 = require('bs58');
-bitcore.deps.Buffer = Buffer;
-bitcore.deps.elliptic = require('elliptic');
-bitcore.deps._ = require('lodash');
+stratcore.deps = {};
+stratcore.deps.bnjs = require('bn.js');
+stratcore.deps.bs58 = require('bs58');
+stratcore.deps.Buffer = Buffer;
+stratcore.deps.elliptic = require('elliptic');
+stratcore.deps._ = require('lodash');
 
-// Internal usage, exposed for testing/advanced tweaking
-bitcore.Transaction.sighash = require('./lib/transaction/sighash');
+stratcore.Transaction.sighash = require('./lib/transaction/sighash');

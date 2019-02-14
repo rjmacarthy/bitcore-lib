@@ -1,9 +1,9 @@
 'use strict';
 
 var should = require('chai').should();
-var bitcore = require('../..');
-var Point = bitcore.crypto.Point;
-var BN = bitcore.crypto.BN;
+var stratcore = require('../..');
+var Point = stratcore.crypto.Point;
+var BN = stratcore.crypto.BN;
 
 describe('Point', function() {
 

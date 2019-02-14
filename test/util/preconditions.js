@@ -2,10 +2,10 @@
 
 var should = require('chai').should();
 
-var bitcore = require('../..');
-var errors = bitcore.errors;
-var $ = bitcore.util.preconditions;
-var PrivateKey = bitcore.PrivateKey;
+var stratcore = require('../..');
+var errors = stratcore.errors;
+var $ = stratcore.util.preconditions;
+var PrivateKey = stratcore.PrivateKey;
 
 describe('preconditions', function() {
 
