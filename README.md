@@ -20,6 +20,7 @@ npm run test
 Example address creation
 
 ```
+var stratcore = require('stratcore-lib');
 
 var privKey = new stratcore.PrivateKey();
 
