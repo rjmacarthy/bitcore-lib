@@ -1,6 +1,6 @@
 {
   "name": "stratcore-lib",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A pure and powerful JavaScript Stratis library.",
   "author": "rjmacarthy <rjmacarthy@hotmail.com>",
   "main": "index.js",
