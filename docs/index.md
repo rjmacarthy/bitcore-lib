@@ -2,7 +2,7 @@
 
 ## Principles
 
-Bitcoin is a powerful new peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Bitcoin network allows for highly resilient bitcoin infrastructure, and the developer community needs reliable, open-source tools to implement bitcoin apps and services. stratcore provides a reliable API for JavaScript apps that need to interface with Bitcoin.
+Stratis is a powerful new peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Stratis network allows for highly resilient stratis infrastructure, and the developer community needs reliable, open-source tools to implement stratis apps and services. stratcore provides a reliable API for JavaScript apps that need to interface with Stratis.
 
 To get started, just `npm install stratcore` or `bower install stratcore`.
 
@@ -17,10 +17,10 @@ To get started, just `npm install stratcore` or `bower install stratcore`.
 
 ## Payment Handling
 * [Using Different Units](unit.md)
-* [Acknowledging and Requesting Payments: Bitcoin URIs](uri.md)
+* [Acknowledging and Requesting Payments: Stratis URIs](uri.md)
 * [The Transaction Class](transaction.md)
 
-## Bitcoin Internals
+## Stratis Internals
 * [Scripts](script.md)
 * [Block](block.md)
 
@@ -37,7 +37,7 @@ Some functionality is implemented as a module that can be installed separately:
 
 * [Payment Protocol Support](https://github.com/bitpay/stratcore-payment-protocol)
 * [Peer to Peer Networking](https://github.com/bitpay/stratcore-p2p)
-* [Bitcoin Core JSON-RPC](https://github.com/bitpay/bitcoind-rpc)
+* [Stratis Core JSON-RPC](https://github.com/bitpay/stratisd-rpc)
 * [Payment Channels](https://github.com/bitpay/stratcore-channel)
 * [Mnemonics](https://github.com/bitpay/stratcore-mnemonic)
 * [Elliptical Curve Integrated Encryption Scheme](https://github.com/bitpay/stratcore-ecies)

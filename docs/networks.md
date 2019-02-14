@@ -1,7 +1,7 @@
 # Networks
-stratcore provides support for the main bitcoin network as well as for `testnet3`, the current test blockchain. We encourage the use of `Networks.livenet` and `Networks.testnet` as constants. Note that the library sometimes may check for equality against this object. Please avoid creating a deep copy of this object.
+stratcore provides support for the main stratis network as well as for `testnet3`, the current test blockchain. We encourage the use of `Networks.livenet` and `Networks.testnet` as constants. Note that the library sometimes may check for equality against this object. Please avoid creating a deep copy of this object.
 
-The `Network` namespace has a function, `get(...)` that returns an instance of a `Network` or `undefined`. The only argument to this function is some kind of identifier of the network: either its name, a reference to a Network object, or a number used as a magic constant to identify the network (for example, the value `0` that gives bitcoin addresses the distinctive `'1'` at its beginning on livenet, is a `0x6F` for testnet).
+The `Network` namespace has a function, `get(...)` that returns an instance of a `Network` or `undefined`. The only argument to this function is some kind of identifier of the network: either its name, a reference to a Network object, or a number used as a magic constant to identify the network (for example, the value `0` that gives stratis addresses the distinctive `'1'` at its beginning on livenet, is a `0x6F` for testnet).
 
 ## Regtest
 
@@ -10,7 +10,7 @@ The regtest network is useful for development as it's possible to programmatical
 ```js
 // Standard testnet
 > stratcore.Networks.testnet.networkMagic;
-<Buffer 0b 11 09 07>
+<Buffer 05 22 35 70>
 ```
 
 ```js
